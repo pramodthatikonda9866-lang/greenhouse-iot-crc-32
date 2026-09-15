@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const http = require('http');
 const express = require('express');
 const cors = require('cors');
@@ -54,6 +56,18 @@ app.use('/api/packets', packetRouter);
 app.use('/api/packet', packetRouter);
 app.use('/api/analytics', createAnalyticsRoutes(simulator));
 app.use('/api/file', createFileRoutes());
+
+// Serve frontend static build in production
+const clientDist = path.join(__dirname, '../../client/dist');
+if (fs.existsSync(clientDist)) {
+  app.use(express.static(clientDist));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api') || req.path.startsWith('/socket.io')) {
+      return next();
+    }
+    res.sendFile(path.join(clientDist, 'index.html'));
+  });
+}
 
 // Global Error Handler
 app.use((err, req, res, next) => {

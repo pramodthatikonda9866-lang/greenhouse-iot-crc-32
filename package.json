@@ -4,9 +4,11 @@
   "description": "Smart Greenhouse IoT Packet Reliability Monitor with Deterministic CRC-32 Engine",
   "main": "server/src/server.js",
   "scripts": {
+    "start": "node server/src/server.js",
+    "build": "npm --prefix client run build",
     "server": "npm --prefix server start",
     "server:dev": "npm --prefix server run dev",
-    "client": "npm --prefix client dev",
+    "client": "npm --prefix client run dev",
     "dev": "concurrently \"npm run server:dev\" \"npm run client\"",
     "test": "npm --prefix server test",
     "install:all": "npm install && npm --prefix server install && npm --prefix client install"
